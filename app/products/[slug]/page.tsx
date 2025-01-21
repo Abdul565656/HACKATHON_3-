@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import React, { useEffect, useState } from "react";
 import { client } from "@/sanity/lib/client";
 import { urlFor } from "@/sanity/lib/image";
@@ -16,6 +16,27 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+
+const LoadingUI = () => {
+  return (
+    <div className="fixed inset-0 flex items-center justify-center bg-gray-50 z-50">
+      <div className="text-center space-y-4">
+        <div className="relative">
+          {/* Spinning Loader */}
+          <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
+          {/* Glowing Effect */}
+          <div className="absolute inset-0 w-16 h-16 rounded-full bg-blue-200 blur-xl opacity-30 animate-pulse"></div>
+        </div>
+        <h1 className="text-xl font-bold text-gray-700">
+          Hang tight! We’re bringing your awesome products...
+        </h1>
+        <p className="text-gray-500">
+          Great things are worth the wait. Your perfect picks are on their way!
+        </p>
+      </div>
+    </div>
+  );
+};
 
 const ProductDetails = ({ params }: { params: { slug: string } }) => {
   const { slug } = params;
@@ -87,7 +108,7 @@ const ProductDetails = ({ params }: { params: { slug: string } }) => {
   };
 
   if (!product) {
-    return <div>Loading...</div>;
+    return <LoadingUI />;
   }
 
   return (
@@ -123,7 +144,7 @@ const ProductDetails = ({ params }: { params: { slug: string } }) => {
 
             {/* Rating */}
             <div className="flex items-center">
-              <span className="text-lg font-semibold mr-2">Your Rating:</span>
+              <span className="text-lg font-semibold mr-2">Rating:</span>
               <div className="flex text-yellow-500">
                 {[...Array(5)].map((_, index) => (
                   <CiStar

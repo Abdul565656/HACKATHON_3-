@@ -70,7 +70,9 @@ const Navbar = () => {
       {/* Divider */}
       <hr className="border-t border-gray-200 ml-10 mr-10" />
 
-      {/* Secondary Navbar */}
+
+
+           {/* Secondary Navbar */}
       <div className="hidden sm:flex justify-center">
         <ul className="flex items-center justify-between space-x-11 p-6 text-gray-600 text-sm">
           <li className="hover:text-gray-800 cursor-pointer">Plant pots</li>
@@ -81,37 +83,79 @@ const Navbar = () => {
           <li className="hover:text-gray-800 cursor-pointer">Cutlery</li>
         </ul>
       </div>
-
-      {/* Search Field */}
+      
+      {/* Search Field with Animation and Two Sections */}
       {showSearch && (
-        <div className="bg-white shadow-md p-4 max-w-screen-lg mx-auto">
-          <input
-            type="text"
-            placeholder="Search for products..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="border border-gray-300 rounded-lg p-2 w-full text-sm"
-          />
-          {searchTerm && (
-            <div className="mt-2">
-              {filteredProducts.length > 0 ? (
-                <ul className="space-y-2">
-                  {filteredProducts.map((product: any) => (
-                    <li
-                      key={product._id}
-                      className="text-blue-600 hover:underline cursor-pointer"
-                    >
-                      <Link href={`/products/${product.slug.current}`}>
-                        {product.name}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
+        <div
+          className={`transition-all duration-500 ease-in-out ${
+            showSearch ? "opacity-100 scale-100" : "opacity-0 scale-95"
+          } bg-white shadow-md p-6 mt-4 max-w-screen-lg mx-auto rounded-lg`}
+          style={{ transformOrigin: "top center" }}
+        >
+          {/* Search Input */}
+          <div className="mb-6">
+            <input
+              type="text"
+              placeholder="Search for products..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="border border-gray-300 rounded-lg p-2 w-full text-sm"
+            />
+          </div>
+
+          <div className="flex flex-col md:flex-row">
+            {/* Section 1: Search Results */}
+            <div className="w-full md:w-1/2 pr-4">
+              <h3 className="text-lg font-semibold mb-4">Search Results</h3>
+              {searchTerm ? (
+                filteredProducts.length > 0 ? (
+                  <ul className="space-y-2">
+                    {filteredProducts.map((product: any) => (
+                      <li
+                        key={product._id}
+                        className="text-blue-600 hover:underline cursor-pointer"
+                      >
+                        <Link href={`/products/${product.slug.current}`}>
+                          {product.name}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-gray-500">No products found.</p>
+                )
               ) : (
-                <p className="text-gray-500">No products found.</p>
+                <p className="text-gray-400 italic">
+                  Type something to search for products.
+                </p>
               )}
             </div>
-          )}
+
+            {/* Divider */}
+            <div className="hidden md:block w-px bg-gray-300"></div>
+
+            {/* Section 2: Suggestions */}
+            <div className="w-full md:w-1/2 pl-4">
+              <h3 className="text-lg font-semibold mb-4">Popular Suggestions</h3>
+              <ul className="space-y-2">
+                <li className="text-blue-600 hover:underline cursor-pointer">
+                  Plant Pots
+                </li>
+                <li className="text-blue-600 hover:underline cursor-pointer">
+                  Ceramic Mugs
+                </li>
+                <li className="text-blue-600 hover:underline cursor-pointer">
+                  Wooden Tables
+                </li>
+                <li className="text-blue-600 hover:underline cursor-pointer">
+                  Modern Chairs
+                </li>
+                <li className="text-blue-600 hover:underline cursor-pointer">
+                  Elegant Tableware
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
       )}
     </div>
