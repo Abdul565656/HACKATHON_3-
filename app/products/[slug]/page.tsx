@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useEffect, useState } from "react";
 import { client } from "@/sanity/lib/client";
 import { urlFor } from "@/sanity/lib/image";
@@ -22,9 +22,7 @@ const LoadingUI = () => {
     <div className="fixed inset-0 flex items-center justify-center bg-gray-50 z-50">
       <div className="text-center space-y-4">
         <div className="relative">
-          {/* Spinning Loader */}
           <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
-          {/* Glowing Effect */}
           <div className="absolute inset-0 w-16 h-16 rounded-full bg-blue-200 blur-xl opacity-30 animate-pulse"></div>
         </div>
         <h1 className="text-xl font-bold text-gray-700">
@@ -46,6 +44,7 @@ const ProductDetails = ({ params }: { params: { slug: string } }) => {
   const [quantity, setQuantity] = useState(1);
   const [selectedRating, setSelectedRating] = useState(0);
   const [showDialog, setShowDialog] = useState(false);
+  const [activeTab, setActiveTab] = useState<"ratings" | "reviews">("ratings"); // State for tabs
 
   useEffect(() => {
     const fetchData = async () => {
@@ -59,7 +58,8 @@ const ProductDetails = ({ params }: { params: { slug: string } }) => {
           priceWithoutDiscount,
           rating,
           image,
-          quantity
+          quantity,
+          reviews
         }
         `,
         { slug }
@@ -116,14 +116,12 @@ const ProductDetails = ({ params }: { params: { slug: string } }) => {
       <Navbar />
       <div className="container mx-auto px-6 py-12 bg-gray-50">
         <div className="relative flex flex-col md:flex-row gap-10">
-          {/* Product Image */}
           <div className="w-full md:w-1/2 relative">
             <img
               src={urlFor(product.image).url()}
               alt={product.name}
               className="w-full h-auto object-cover rounded-lg shadow-lg"
             />
-            {/* Overlay Content */}
             <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent p-8 flex flex-col justify-end z-10">
               <h1 className="text-4xl font-semibold text-white">{product.name}</h1>
               <p className="text-xl text-gray-200 mt-2">Price: ${product.price}</p>
@@ -138,31 +136,60 @@ const ProductDetails = ({ params }: { params: { slug: string } }) => {
             </div>
           </div>
 
-          {/* Product Details */}
           <div className="w-full md:w-1/2 flex flex-col space-y-6 px-6 pt-8 bg-white rounded-lg shadow-md">
             <p className="text-gray-700">{product.description}</p>
-
-            {/* Rating */}
-            <div className="flex items-center">
-              <span className="text-lg font-semibold mr-2">Rating:</span>
-              <div className="flex text-yellow-500">
-                {[...Array(5)].map((_, index) => (
-                  <CiStar
-                    key={index}
-                    onClick={() => handleRatingChange(index + 1)}
-                    className={`cursor-pointer text-2xl ${
-                      index < selectedRating ? "text-yellow-500" : "text-gray-300"
-                    }`}
-                  />
-                ))}
-              </div>
+            
+            <div className="border-b border-gray-300 mb-4">
+              <button
+                onClick={() => setActiveTab("ratings")}
+                className={`px-4 py-2 ${
+                  activeTab === "ratings" ? "border-b-2 border-blue-500 text-blue-500" : "text-gray-600"
+                }`}
+              >
+                Ratings
+              </button>
+              <button
+                onClick={() => setActiveTab("reviews")}
+                className={`px-4 py-2 ${
+                  activeTab === "reviews" ? "border-b-2 border-blue-500 text-blue-500" : "text-gray-600"
+                }`}
+              >
+                Reviews
+              </button>
             </div>
 
-            {/* Quantity Selection */}
+            {activeTab === "ratings" && (
+              <div className="flex items-center">
+                <span className="text-lg font-semibold mr-2">Rating:</span>
+                <div className="flex text-yellow-500">
+                  {[...Array(5)].map((_, index) => (
+                    <CiStar
+                      key={index}
+                      onClick={() => handleRatingChange(index + 1)}
+                      className={`cursor-pointer text-2xl ${
+                        index < selectedRating ? "text-yellow-500" : "text-gray-300"
+                      }`}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {activeTab === "reviews" && (
+              <div>
+                <h3 className="text-lg font-semibold mb-2">Customer Reviews:</h3>
+                <ul className="space-y-4">
+                  {product.reviews?.map((review: string, index: number) => (
+                    <li key={index} className="bg-gray-100 p-4 rounded-md shadow-sm">
+                      {review}
+                    </li>
+                  )) || <p>No reviews available for this product.</p>}
+                </ul>
+              </div>
+            )}
+
             <div className="flex items-center space-x-6">
-              <span className="text-lg font-semibold text-gray-700">
-                Quantity:
-              </span>
+              <span className="text-lg font-semibold text-gray-700">Quantity:</span>
               <button
                 onClick={() => handleQuantityChange("decrement")}
                 className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded-full"
@@ -179,15 +206,21 @@ const ProductDetails = ({ params }: { params: { slug: string } }) => {
               </button>
             </div>
 
-            {/* Add to Cart Button */}
-            <button
-              className="bg-blue-600 text-white py-3 px-6 rounded-md hover:bg-blue-700"
-              onClick={() => handleAddToCart(product)}
-            >
-              Add To Cart
-            </button>
+            <div className="flex space-x-4">
+              <button
+                className="bg-[#2e224d] text-white py-3 px-6 rounded-md hover:bg-blue-700"
+                onClick={() => handleAddToCart(product)}
+              >
+                Add To Cart
+              </button>
+              <Link
+                href="/payment"
+                className="bg-[#2e224d] text-white py-3 px-6 rounded-md hover:bg-[#241c3c]"
+              >
+                Go to Checkout
+              </Link>
+            </div>
 
-            {/* Alert Dialog */}
             <AlertDialog open={showDialog} onOpenChange={setShowDialog}>
               <AlertDialogContent>
                 <AlertDialogHeader>
@@ -197,9 +230,7 @@ const ProductDetails = ({ params }: { params: { slug: string } }) => {
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                  <AlertDialogCancel
-                    onClick={() => setShowDialog(false)}
-                  >
+                  <AlertDialogCancel onClick={() => setShowDialog(false)}>
                     Continue Shopping
                   </AlertDialogCancel>
                   <Link href="/carts">
@@ -211,7 +242,6 @@ const ProductDetails = ({ params }: { params: { slug: string } }) => {
           </div>
         </div>
 
-        {/* Related Products */}
         <div className="mt-12">
           <h2 className="text-2xl font-semibold mb-6">More Products Like This</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">

@@ -1,11 +1,12 @@
-import React from 'react';
-import Link from 'next/link';
+import React from "react";
+import Link from "next/link";
 import { client } from "@/sanity/lib/client";
 import { urlFor } from "@/sanity/lib/image";
 
 const Ceramics = async () => {
   const getProducts = async () => {
-      const products = await client.fetch(`
+    const products = await client.fetch(
+      `
         *[_type=="product"]{
           name,
           price,
@@ -14,10 +15,10 @@ const Ceramics = async () => {
         }
       `,
       {},
-      {cache : 'no-store'}
+      { cache: "no-store" }
     );
-      return products;
-    };
+    return products;
+  };
 
   const allProducts = await getProducts();
   console.log(allProducts);
@@ -30,23 +31,25 @@ const Ceramics = async () => {
       </div>
 
       {/* Product Items */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-8 px-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 px-4">
         {allProducts.map((product: any) => (
           <div key={product._id} className="w-full">
             {/* Card Image */}
             {product.image && (
-              <div className="relative w-full h-[400px] bg-gray-200">
+              <div className="relative w-full h-[300px] bg-gray-200 rounded-md overflow-hidden">
                 <img
-                  src={urlFor(product.image).width(600).height(800).url()}
+                  src={urlFor(product.image).width(400).height(500).url()}
                   alt={product.name || "Product Image"}
                   className="w-full h-full object-cover"
                 />
               </div>
             )}
             {/* Card Content */}
-            <div className="mt-4 text-[#2A254B]">
+            <div className="mt-3 text-[#2A254B] text-center">
               <Link href={`/products/${product.slug.current}`}>
-                <p className="py-2 text-sm font-medium">{product.name}</p>
+                <p className="py-1 text-sm font-medium hover:text-blue-600">
+                  {product.name}
+                </p>
               </Link>
               <p className="text-sm font-semibold">${product.price}</p>
             </div>
@@ -55,9 +58,9 @@ const Ceramics = async () => {
       </div>
 
       {/* View Collection Button */}
-      <div className="flex justify-center items-center mt-20">
+      <div className="flex justify-center items-center mt-16">
         <Link href="/SeeAllProducts">
-          <button className="bg-[#F9F9F9] py-3 px-5 rounded-[5px] text-[#2A254B]">
+          <button className="bg-[#F9F9F9] py-3 px-5 rounded-[5px] text-[#2A254B] hover:bg-[#E5E5E5]">
             View collection
           </button>
         </Link>
