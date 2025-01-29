@@ -62,7 +62,7 @@ const CheckoutPage = () => {
                   <span>$320.00</span>
                 </li>
               </ul>
-              <Button className="w-full mt-4" variant="primary">Proceed to Payment</Button>
+              <Button className="w-full mt-4">Proceed to Payment</Button>
             </Card>
           </div>
         </div>
