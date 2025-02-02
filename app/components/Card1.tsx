@@ -27,7 +27,7 @@ const Ceramics = async () => {
     <div className="overflow-x-hidden">
       {/* Header Section */}
       <div className="px-2 md:px-8 py-12 text-[#2A254B] mt-12">
-        <h1 className="text-2xl font-semibold">New Ceramics</h1>
+        <h1 className="text-2xl font-semibold">New Ceramicsss</h1>
       </div>
 
       {/* Product Items */}
@@ -61,7 +61,7 @@ const Ceramics = async () => {
       <div className="flex justify-center items-center mt-16">
         <Link href="/SeeAllProducts">
           <button className="bg-[#F9F9F9] py-3 px-5 rounded-[5px] text-[#2A254B] hover:bg-[#E5E5E5]">
-            View collection
+            View collectionnnn
           </button>
         </Link>
       </div>

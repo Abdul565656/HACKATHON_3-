@@ -6,7 +6,7 @@ const Ceramics = () => {
   return (
    <div>
         <div className="px-4 md:px-8 py-12 text-[#2A254B]">
-          <h1 className="text-2xl font-semibold">Our Popular Products</h1>
+          <h1 className="text-2xl font-semibold">Our Popularrr Products</h1>
 
           {/* Product Items */}
           <div className="flex flex-col md:flex-row md:justify-start justify-center items-center gap-20 md:gap-3 mt-8">
@@ -55,7 +55,7 @@ const Ceramics = () => {
           {/* View Collection Button */}
           <div className=" flex justify-center items-center mt-24">
             <Link href='/SeeAllProducts'><button className="bg-[#F9F9F9] py-3 px-5 rounded-[5px] text-[#2A254B]">
-              View collection
+              View collectionnnn
             </button></Link>
           </div>
         </div>
